@@ -1,0 +1,27 @@
+
+public class Path extends Edge {
+    
+    String [] str = new String[10];
+    
+    
+    
+    public Path(Vertex source, Vertex target, int weight) {
+        super(source, target, weight);
+        
+        for(int i=0;i<10;i++){
+           str[i] =" ";
+        }
+    }
+
+    public String updatePath (Router v, int index, int u) {
+       str[index] = str[u] + v.displayInfo();
+       return str[index];
+    }
+
+    @Override
+    public String displayInfo(){
+        return " ";
+    }
+      
+    
+}
