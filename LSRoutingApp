@@ -1,0 +1,50 @@
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class LSRoutingApp {
+
+    public static void main(String[] args) throws FileNotFoundException {
+
+        File req1File = new File("output.txt");
+        Scanner in = new Scanner(System.in);
+        int choice = -1;
+        int[] n = {2000, 3000, 4000, 5000, 6000};
+
+        while (choice != 1 && choice != 2) {
+            System.out.println("****************************************************************************************");
+            System.out.println("                                CPCS-324 PROJECT PT.II                                  ");
+            System.out.println("   Implementation of Dijkstra's Algorithm for the Single-Source Shortest Path Problem   ");
+            System.out.println("*****************************************************************************************");
+            System.out.println("Select one of the following options to apply Dijkstra's algorithm to: ");
+            System.out.println("1- Read graph from file");
+            System.out.println("2- Generate random graphs");
+            System.out.println("Enter your choice: ");
+            choice = in.nextInt();
+
+            switch (choice) {
+                case 1:
+                    File file = new File("graphFile.txt");
+                    Graph g = new Graph();
+                    Graph done = g.readGraphFromFile(file);
+                    DijkstraAlg SSA = new DijkstraAlg();
+                    SSA.computeDijkstraAlg(done);
+                    break;
+                case 2:
+
+                    for (int i = 0; i < n.length; i++) {
+                        g = new Graph();
+                        done = g.makeGraph(n[i], (n[i] * 5));
+                        System.out.println("n is: " + n[i] + " m is: " + (n[i] * 5));
+                        DijkstraAlg d = new DijkstraAlg();
+                        d.computeDijkstraAlg(done);
+                    }
+
+                    break;
+            }
+        }
+    }
+
+}
