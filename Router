@@ -1,0 +1,20 @@
+public class Router extends Vertex {
+   String routerName;
+
+    public Router(int position) {
+        super(position);
+    }
+    
+    public Router(char c) {
+        super(c);
+    }
+       
+    
+   @Override
+    public String displayInfo(){
+        return ("Rt. " + super.getLabel() + " - ");
+        
+    }
+   
+   
+}
