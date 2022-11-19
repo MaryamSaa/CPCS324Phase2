@@ -1,0 +1,105 @@
+
+import java.io.PrintWriter;
+
+
+public class DijkstraAlg {
+
+    private Graph g;
+
+    public void computeDijkstraAlg(Graph g) {
+        // start the timer
+        double Start_Time = System.currentTimeMillis();
+        // Graph adjacncy matrix 
+        Path graph[][] = g.getAdjMatrix();
+        int size = graph.length;
+        //set a maximum value 
+        final int MAX = Integer.MAX_VALUE;
+        // array for router if its viseted
+        boolean[] isVisited = new boolean[size];
+        //array to compute the distance
+        int distance[] = new int[size];
+        //store the string (path)
+        String [] PLSWORK = new String[size];
+
+        //store the path of the graph
+        String[] path = new String[size];
+        //store the path of the graph for ontegers
+        String[] pathint = new String[size];
+        
+        
+        //-----------------------------------------------------------------------------
+        // START DIJKSTRA
+        //--------------------------------------------------------------------------------
+        // all the routers are not visited and their distance us max
+        for (int i = 0; i < size; i++) {
+            isVisited[i] = false;
+            distance[i] = MAX;
+        }
+        //first router distance =0
+        distance[0] = 0;
+        
+        // firt router is 'A'
+        Router src = new Router('A');
+        PLSWORK[0] = src.displayInfo();
+        path[0] = src.displayInfo();
+       
+        // if the graph is char or not
+        boolean isChar = g.isIsChar();
+
+        for (int i = 0; i < size; i++) {
+            //search for the minium distance 
+            int u = 0;
+            int minDistance = MAX;
+            for (int j = 0; j < size; j++) {
+                if (isVisited[j] != true && distance[j] < minDistance) {
+ 
+                    minDistance = distance[j];
+                    u = j; 
+                }
+            }
+            
+            // Set u is visited
+            isVisited[u] = true;
+            // recalculate the distance
+            for (int v = 0; v < size; v++) {
+                if (graph[u][v] == null) {
+                    continue;
+                }
+                if (isVisited[v] == false) {
+                    if (distance[u] + graph[u][v].getWeight() < distance[v]) {
+                        distance[v] = distance[u] + graph[u][v].getWeight();
+                        char charRV = (char) (v + 65);
+                        char charRU = (char)(u+65);
+                        Router routerV = new Router(charRV);
+                        Router routerU = new Router(charRU);
+                        Path finalPath = new Path(routerU, routerV, distance[v]);
+                        // Update the path by adding the parent path plus the current vertix path
+                        if (isChar == true) {
+                            path[v] = path[u] + finalPath.updatePath(routerV, v, u); 
+                        } else {
+                            pathint[v] = pathint[u] + v + " --" + (distance[v] - distance[u]) + "-- ";
+                        }
+                    }
+                }
+            }
+
+        }
+        //stop the timmer
+        double Finish_Time = System.currentTimeMillis();
+        //Total runtime of the algorithm
+        System.out.println("Total runtime of Dijkstra Algorithm: " + (Finish_Time - Start_Time) + " ms.");
+        // Print all the distances with the pathes
+        //if router of vertex is char
+        if (isChar == true) {
+            System.out.println("\n*************************Dijkstra Algorithm****************************");
+            System.out.println("The source router is: " + src.getLabel());
+            System.out.println("The paths from router " + src.getLabel() + " to the rest of the routers are: ");
+            for (int i = 1; i < size; i++) {
+                Router dest = new Router(g.getVertices().get(i).getLabel());
+                Path printFPath = new Path (src,dest,distance[g.getVertices().get(i).getPosition()]);
+               System.out.println(path[i] + " route length: " + distance[i]);
+            }         
+        } 
+    }
+
+}
